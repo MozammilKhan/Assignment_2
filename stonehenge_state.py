@@ -12,19 +12,21 @@ class StonehengeState(GameState):
     The state of a game at a certain point in time.
     """
 
-    def __init__(self, is_p1_turn: bool, current_state: str) -> None:
+    def __init__(self, is_p1_turn: bool, current_state: str, current_dic) \
+            -> None:
         """
         Initialize this game state and set the current player based on
         is_p1_turn.
         """
         super().__init__(is_p1_turn)
         self.current_state = current_state
+        self.current_dic = current_dic
 
     def __str__(self) -> str:
         """
         Return a string representation of the current state of the game.
         """
-        return (self.current_state)
+        return self.current_state
 
     def get_possible_moves(self) -> list:
         """
@@ -45,10 +47,18 @@ class StonehengeState(GameState):
             new_move = "1"
         elif not self.p1_turn:
             new_move = "2"
-        old = self.current_state
-        new = old.replace(move, new_move)
+        #changing the items in the dictionary
+        for value in self.current_dic.values():
+            for lst in value:
+                if move in lst:
+                    lst[lst.index(move)] = new_move
+                if (len(lst) - 1) / 2 <= lst.count(new_move):
+                    lst[lst.index("@")] = new_move
+
+        old_state= self.current_state
+        new = old_state.replace(move, new_move)
         new_state = StonehengeState(not self.p1_turn,
-                                    new)
+                                    new, self.current_dic)
         return new_state
 
     def __repr__(self) -> str:
