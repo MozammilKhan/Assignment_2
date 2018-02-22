@@ -19,8 +19,9 @@ class StonehengeState(GameState):
         is_p1_turn.
         """
         super().__init__(is_p1_turn)
-        self.current_state = current_state
         self.current_dic = current_dic
+        self.current_state = current_state
+        print(self.current_dic)
 
     def __str__(self) -> str:
         """
@@ -52,7 +53,7 @@ class StonehengeState(GameState):
             for lst in value:
                 if move in lst:
                     lst[lst.index(move)] = new_move
-                if (len(lst) - 1) / 2 <= lst.count(new_move):
+                if (len(lst) - 1) / 2 <= lst.count(new_move) and "@" in lst:
                     lst[lst.index("@")] = new_move
 
         old_state= self.current_state

@@ -4,15 +4,17 @@ An implimentation of Stonehenge
 from game import Game
 from stonehenge_state import StonehengeState
 
-board1 = ("      @   @\n"
-          "     /   /\n"
-          "@ - A - B\n"
-          "     \\ / \\\n"
-          "  @ - C   @\n"
-          "       \\\n        @")
-
 dic1 = {"h": [["@", "A", "B"], ["@", "C"]], "d1": [["@", "A"], ["@", "B", "C"]],
         "d2": [["@", "C", "A"], ["@", "B"]]}
+
+board1 = ("      {}   {}\n"
+          "     /   /\n"
+          "{} - A - B\n"
+          "     \\ / \\\n"
+          "  {} - C   {}\n"
+          "       \\\n        {}".format(dic1["d1"][0][0], dic1["d1"][1][0],
+                                         dic1["h"][0][0], dic1["h"][1][0],
+                                         dic1["d2"][1][0], dic1["d2"][0][0]))
 
 board2 = ("        @   @\n"
           "       /   /\n"
