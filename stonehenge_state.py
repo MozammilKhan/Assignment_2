@@ -5,6 +5,7 @@ NOTE: You do not have to run python-ta on this file.
 """
 from typing import Any
 from game_state import GameState
+import copy
 
 
 class StonehengeState(GameState):
@@ -48,18 +49,56 @@ class StonehengeState(GameState):
             new_move = "1"
         elif not self.p1_turn:
             new_move = "2"
-        #changing the items in the dictionary
-        for value in self.current_dic.values():
+        new_dic = copy.deepcopy(self.current_dic)
+        # changing the items in the dictionary
+        for value in new_dic.values():
             for lst in value:
                 if move in lst:
                     lst[lst.index(move)] = new_move
                 if (len(lst) - 1) / 2 <= lst.count(new_move) and "@" in lst:
                     lst[lst.index("@")] = new_move
+        board1 = ("      {}   {}\n"
+                  "     /   /\n"
+                  "{} - {} - {}\n"
+                  "     \\ / \\\n"
+                  "  {} - {}   {}\n"
+                  "       \\\n        {}".format(new_dic["d1"][0][0],
+                                                 new_dic["d1"][1][0],
+                                                 new_dic["h"][0][0],
+                                                 new_dic["h"][0][1],
+                                                 new_dic["h"][0][2],
+                                                 new_dic["h"][1][0],
+                                                 new_dic["h"][1][1],
+                                                 new_dic["d2"][1][0],
+                                                 new_dic["d2"][0][0]))
+        board2 = ('        {}   {}\n'
+                  '       /   /\n'
+                  '  {} - {} - {}   {}\n'
+                  '     / \ / \ /\n'
+                  '{} - {} - {} - {}\n'
+                  '     \ / \ / \ \n'
+                  '  {} - {} - {}   {}\n'
+                  '       \   \ \n'
+                  '        {}   {}'.format(new_dic["d1"][0][0],
+                                           new_dic["d1"][1][0],
+                                           new_dic["h"][0][0],
+                                           new_dic["h"][0][1],
+                                           new_dic["h"][0][2],
+                                           new_dic["d1"][2][0],
+                                           new_dic["h"][1][0],
+                                           new_dic["h"][1][1],
+                                           new_dic["h"][1][2],
+                                           new_dic["h"][1][3],
+                                           new_dic["h"][2][0],
+                                           new_dic["h"][2][1],
+                                           new_dic["h"][2][2],
+                                           new_dic['d2'][2][0],
+                                           new_dic["d2"][0][0],
+                                           new_dic["d2"][1][0]))
+        new = board2
 
-        old_state= self.current_state
-        new = old_state.replace(move, new_move)
         new_state = StonehengeState(not self.p1_turn,
-                                    new, self.current_dic)
+                                    new, new_dic)
         return new_state
 
     def __repr__(self) -> str:
@@ -76,16 +115,10 @@ class StonehengeState(GameState):
         player can guarantee from state self.
         """
         # TODO idk what this is
-        if is_pos_square(self.current_state):
-            return self.WIN
-        elif all([is_pos_square(self.current_state - n ** 2)
-                  for n in range(1, self.current_state + 1)
-                  if n ** 2 < self.current_state]):
-            return self.LOSE
-
-        return self.DRAW
+        pass
 
 
 if __name__ == "__main__":
     from python_ta import check_all
+
     check_all(config="a2_pyta.txt")

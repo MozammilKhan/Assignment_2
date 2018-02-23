@@ -41,10 +41,10 @@ board4 = ("            @   @\n"
           "        \    \   \   \ \n"
           "         @   @   @    @\n")
 
-print(board1 + "\n")
-print(board2 + "\n")
-print(board3 + "\n")
-print(board4)
+#print(board1 + "\n")
+#print(board2 + "\n")
+#print(board3 + "\n")
+#print(board4)
 
 
 dic1 = {"h": [["@", "A", "B"], ["@", "C"]], "d1": [["@", "A"], ["@", "B", "C"]],
@@ -54,13 +54,11 @@ def test(x):
     """
     testing trying to replace all the "A" with "5"
     """
+    new_lst =[]
     for value in x.values():
         for lst in value:
-            if "A" in lst:
-                lst[lst.index("A")] = 1
-            if (len(lst)-1) / 2 <= lst.count(1):
-                lst[lst.index("@")] = 1
-    return x
+            new_lst.append(lst[0])
 
+    print(new_lst)
 
 print(test(dic1))

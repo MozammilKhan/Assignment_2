@@ -9,46 +9,67 @@ dic1 = {"h": [["@", "A", "B"], ["@", "C"]], "d1": [["@", "A"], ["@", "B", "C"]],
 
 board1 = ("      {}   {}\n"
           "     /   /\n"
-          "{} - A - B\n"
+          "{} - {} - {}\n"
           "     \\ / \\\n"
-          "  {} - C   {}\n"
-          "       \\\n        {}".format(dic1["d1"][0][0], dic1["d1"][1][0],
-                                         dic1["h"][0][0], dic1["h"][1][0],
-                                         dic1["d2"][1][0], dic1["d2"][0][0]))
-
-board2 = ("        @   @\n"
-          "       /   /\n"
-          "  @ - A - B   @\n"
-          "     / \ / \ /\n"
-          "@ - C - D - E\n"
-          "     \ / \ / \ \n"
-          "  @ - F - G   @\n"
-          "       \   \ \n"
-          "        @   @\n")
+          "  {} - {}   {}\n"
+          "       \\\n        {}".format(dic1["d1"][0][0],
+                                         dic1["d1"][1][0],
+                                         dic1["h"][0][0],
+                                         dic1["h"][0][1],
+                                         dic1["h"][0][2],
+                                         dic1["h"][1][0],
+                                         dic1["h"][1][1],
+                                         dic1["d2"][1][0],
+                                         dic1["d2"][0][0]))
 
 dic2 = {"h": [["@", "A", "B"], ["@", "C", "D", "E"], ["@", "F", "G"]],
         "d1": [["@", "A", "C"], ["@", "B", "D", "F"], ["@", "E", "G"]],
         "d2": [["@", "F", "C"], ["@", "G", "D", "A"], ["@", "E", "B"]]}
 
-board3 = ("          @   @\n"
-          "         /   /\n"
-          "    @ - A - B   @\n"
-          "     \ / \ / \ / \n"
-          "  @ - C - D - E   @\n"
-          "     / \ / \ / \ /\n"
-          "@ - F - G - H - I\n"
-          "     \ / \ / \ / \ \n"
-          "  @ - J - K - L   @ \n"
-          "        \   \   \ \n"
-          "         @   @   @\n")
+board2 = ('        {}   {}\n'
+          '       /   /\n'
+          '  {} - {} - {}   {}\n'
+          '     / \ / \ /\n'
+          '{} - {} - {} - {}\n'
+          '     \ / \ / \ \n'
+          '  {} - {} - {}   {}\n'
+          '       \   \ \n'
+          '        {}   {}'.format(dic2["d1"][0][0],
+                                   dic2["d1"][1][0],
+                                   dic2["h"][0][0],
+                                   dic2["h"][0][1],
+                                   dic2["h"][0][2],
+                                   dic2["d1"][2][0],
+                                   dic2["h"][1][0],
+                                   dic2["h"][1][1],
+                                   dic2["h"][1][2],
+                                   dic2["h"][1][3],
+                                   dic2["h"][2][0],
+                                   dic2["h"][2][1],
+                                   dic2["h"][2][2],
+                                   dic2['d2'][2][0],
+                                   dic2["d2"][0][0],
+                                   dic2["d2"][1][0]))
 
 dic3 = {"h": [["@", "A", "B"], ["@", "C", "D", "E"], ["@", "F", "G", "H", "I"],
               ["@", "J", "K", "L"]],
-        "d1": [["@", "A", "C", "F"], ["@", "B", "D", "G", "J"], ["@", "E", "H",
-                                                                 "K"],
-               ["@", "I", "L"]],
+        "d1": [["@", "A", "C", "F"], ["@", "B", "D", "G", "J"],
+               ["@", "E", "H", "K"], ["@", "I", "L"]],
         "d2": [["@", "J", "F"], ["@", "K", "G", "C"], ["@", "L", "H", "D", "A"],
                ["@", "I", "E", "B"]]}
+
+board3 = ('          @   @\n'
+          '         /   /\n'
+          '    @ - A - B   @\n'
+          '     \ / \ / \ / \n'
+          '  @ - C - D - E   @\n'
+          '     / \ / \ / \ /\n'
+          '@ - F - G - H - I\n'
+          '     \ / \ / \ / \ \n'
+          '  @ - J - K - L   @ \n'
+          '        \   \   \ \n'
+          '         @   @   @\n'.format())
+
 
 board4 = ("            @   @\n"
           "           /   /\n"
@@ -91,10 +112,11 @@ class Stonehenge(Game):
         :type p1_starts: bool
         """
         len_game = ''
-        length = int(input("Enter the length of stonehenge: "))
+        self.length = int(input("Enter the length of stonehenge: "))
         for x in dic:
-            if x == length:
+            if x == self.length:
                 len_game = dic[x]
+        self.current_dic = len_game[1]
         self.current_state = StonehengeState(p1_starts, len_game[0],
                                              len_game[1])
 
@@ -119,7 +141,7 @@ class Stonehenge(Game):
         :return: True if the game is over, False otherwise.
         :rtype: bool
         """
-        # TODO: Impliment is_over
+        # return not any(i.isalpha() for i in state)
 
     def is_winner(self, player):
         """
@@ -132,7 +154,17 @@ class Stonehenge(Game):
         :return: Whether player has won or not.
         :rtype: bool
         """
-        # TODO impliment this
+        lst = []
+        for value in self.current_dic.values():
+            for i in value:
+                lst.append(i[0])
+        p1 = lst.count(1)
+        p2 = lst.count(2)
+        if p1 > p2 and player == 'p1':
+            return True
+        elif p2 > p1 and player == 'p2':
+            return True
+        return False
 
     def str_to_move(self, string):
         """
@@ -147,6 +179,8 @@ class Stonehenge(Game):
         # TODO: Impliment this
         if not string.strip().isalpha():
             return -1
+
+        # TODO: use upper to test for
 
         return str(string.strip())
 
