@@ -58,17 +58,49 @@ dic3 = {"h": [["@", "A", "B"], ["@", "C", "D", "E"], ["@", "F", "G", "H", "I"],
         "d2": [["@", "J", "F"], ["@", "K", "G", "C"], ["@", "L", "H", "D", "A"],
                ["@", "I", "E", "B"]]}
 
-board3 = ('          @   @\n'
+board3 = ('          {}   {}\n'
           '         /   /\n'
-          '    @ - A - B   @\n'
+          '    {} - {} - {}   {}\n'
           '     \ / \ / \ / \n'
-          '  @ - C - D - E   @\n'
+          '  {} - {} - {} - {}   {}\n'
           '     / \ / \ / \ /\n'
-          '@ - F - G - H - I\n'
+          '{} - {} - {} - {} - {}\n'
           '     \ / \ / \ / \ \n'
-          '  @ - J - K - L   @ \n'
+          '  {} - {} - {} - {}   {} \n'
           '        \   \   \ \n'
-          '         @   @   @\n'.format())
+          '         {}   {}   {}\n'.format(dic3["d1"][0][0],
+                                           dic3["d1"][1][0],
+                                           dic3["h"][0][0],
+                                           dic3['h'][0][1],
+                                           dic3["h"][0][2],
+                                           dic3["d1"][2][0],
+                                           dic3["h"][1][0],
+                                           dic3["h"][1][1],
+                                           dic3["h"][1][2],
+                                           dic3["h"][1][3],
+                                           dic3["d2"][3][0],
+                                           dic3["h"][2][0],
+                                           dic3["h"][2][1],
+                                           dic3["h"][2][2],
+                                           dic3["h"][2][3],
+                                           dic3["h"][2][4],
+                                           dic3["h"][3][0],
+                                           dic3["h"][3][1],
+                                           dic3["h"][3][2],
+                                           dic3["h"][3][3],
+                                           dic3['d2'][3][0],
+                                           dic3["d2"][0][0],
+                                           dic3["d2"][1][0],
+                                           dic3["d2"][2][0], ))
+
+dic4 = {"h": [["@", "A", "B"], ["@", "C", "D", "E"], ["@", "F", "G", "H", "I"],
+              ["@", "J", "K", "L", "M", "N"],
+              ["@", "O", "P", "Q", "R"]],
+        "d1": [["@", "A", "C", "F", "J"], ["@", "B", "D", "G", "K", "O"],
+               ["@", "E", "H", "L", "P"], ["@", "I", "M", "Q"],
+               ["@", "N", "R"]],
+        "d2": [["@", "O", "J"], ["@", "P", "K", "F"], ["@", "Q", "L", "G", "C"],
+               ["@", "R", "M", "H", "D", "A"], ["@", "N", "I", "E", "B"]]}
 
 
 board4 = ("            @   @\n"
@@ -83,16 +115,31 @@ board4 = ("            @   @\n"
           "     \ / \ / \ / \ / \ \n"
           "  @ - O - P - Q - R   @\n"
           "       \   \   \   \ \n"
-          "        @   @   @   @\n")
+          "        @   @   @   @\n".format(dic4["d1"][0][0],
+                                           dic4["d1"][1][0],
+                                           dic4["h"][0][0],
+                                           dic4['h'][0][1],
+                                           dic4["h"][0][2],
+                                           dic4["d1"][2][0],
+                                           dic4["h"][1][0],
+                                           dic4["h"][1][1],
+                                           dic4["h"][1][2],
+                                           dic4["h"][1][3],
+                                           dic4["d2"][3][0],
+                                           dic4["h"][2][0],
+                                           dic4["h"][2][1],
+                                           dic4["h"][2][2],
+                                           dic4["h"][2][3],
+                                           dic4["h"][2][4],
+                                           dic4["h"][3][0],
+                                           dic4["h"][3][1],
+                                           dic4["h"][3][2],
+                                           dic4["h"][3][3],
+                                           dic4['d2'][3][0],
+                                           dic4["d2"][0][0],
+                                           dic4["d2"][1][0],
+                                           dic4["d2"][2][0], ))
 
-dic4 = {"h": [["@", "A", "B"], ["@", "C", "D", "E"], ["@", "F", "G", "H", "I"],
-              ["@", "J", "K", "L", "M", "N"],
-              ["@", "O", "P", "Q", "R"]],
-        "d1": [["@", "A", "C", "F", "J"], ["@", "B", "D", "G", "K", "O"],
-               ["@", "E", "H", "L", "P"], ["@", "I", "M", "Q"],
-               ["@", "N", "R"]],
-        "d2": [["@", "O", "J"], ["@", "P", "K", "F"], ["@", "Q", "L", "G", "C"],
-               ["@", "R", "M", "H", "D", "A"], ["@", "N", "I", "E", "B"]]}
 
 dic = {1: [board1, dic1], 2: [board2, dic2], 3: [board3, dic3],
        4: [board4, dic4]}
@@ -116,9 +163,8 @@ class Stonehenge(Game):
         for x in dic:
             if x == self.length:
                 len_game = dic[x]
-        self.current_dic = len_game[1]
         self.current_state = StonehengeState(p1_starts, len_game[0],
-                                             len_game[1])
+                                             len_game[1], self.length)
 
     def get_instructions(self):
         """
@@ -141,7 +187,20 @@ class Stonehenge(Game):
         :return: True if the game is over, False otherwise.
         :rtype: bool
         """
-        # return not any(i.isalpha() for i in state)
+        # TODO: not working
+        dic_num = {1: 6, 2: 9, 3: 12, 4: 15}
+        for i in dic_num:
+            if i == self.length:
+                value = dic_num[i] / 2
+        new_lst = []
+        for x in state.current_dic.values():
+            for lst in x:
+                new_lst.append(lst[0])
+        num_of_1 = new_lst.count("1")
+        num_of_2 = new_lst.count("2")
+        if num_of_1 >= value or num_of_2 >= value:
+            return True
+        return False
 
     def is_winner(self, player):
         """
@@ -154,12 +213,13 @@ class Stonehenge(Game):
         :return: Whether player has won or not.
         :rtype: bool
         """
+        # TODO: not working in unittest
         lst = []
-        for value in self.current_dic.values():
+        for value in self.current_state.current_dic.values():
             for i in value:
                 lst.append(i[0])
-        p1 = lst.count(1)
-        p2 = lst.count(2)
+        p1 = lst.count("1")
+        p2 = lst.count("2")
         if p1 > p2 and player == 'p1':
             return True
         elif p2 > p1 and player == 'p2':
@@ -176,13 +236,11 @@ class Stonehenge(Game):
         :return:
         :rtype:
         """
-        # TODO: Impliment this
+        # TODO double check this with someone
         if not string.strip().isalpha():
             return -1
 
-        # TODO: use upper to test for
-
-        return str(string.strip())
+        return string.upper()
 
 
 if __name__ == "__main__":

@@ -76,6 +76,8 @@ class GameState:
         raise NotImplementedError
 
 
+
+
 if __name__ == "__main__":
     from python_ta import check_all
     check_all(config="a2_pyta.txt")

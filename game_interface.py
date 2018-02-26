@@ -23,7 +23,7 @@ playable_games = {'s': SubtractSquareGame,
 # 'mr' should map to your recursive implementation of minimax while
 # 'mi' should map to your iterative implementation of minimax
 usable_strategies = {'i': interactive_strategy,
-                     'mr': None,
+                     'mr': recursive_minimax,
                      'mi': None}
 
 
